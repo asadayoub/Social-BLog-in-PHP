@@ -3,6 +3,9 @@ session_start();
 if(isSession()== false){
     header('Location: login.php');
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    destroySession();
+}
 ?>
 <header class="position-fixed width100 m-0 p-0 z-index-1">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -18,7 +21,10 @@ if(isSession()== false){
                             <a class="nav-link" href="#">Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Logout</a>
+                        <form action="" method="post">
+                            <button type="submit" class="btn button-design rounded width100">
+                            Logout</button>
+                        </form>
                         </li>
                     </ul>
                 </div>

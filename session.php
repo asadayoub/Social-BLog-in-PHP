@@ -7,4 +7,8 @@ function isSession() {
     }
     return false;
   }
+  function destroySession(){
+    session_destroy();
+    header('Location: login.php');
+  }
 ?>
