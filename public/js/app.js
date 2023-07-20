@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
             }
         })
     }
-    
-});
 
+});
+// const login = document.querySelector('.login12')
+// login.addEventListener('click', (event1) => {
+//     event1.preventDefault();
+// })
