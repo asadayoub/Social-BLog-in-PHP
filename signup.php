@@ -1,6 +1,8 @@
 <?php
+include 'dbOperations.php';
 $emailErr = $passErr = $firstNameErr = $lastNameErr = $confirmPassErr = $passwordCheck=null;
-$email = $pass = null;
+$email = $password = null;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["firstName"])) {
         $firstNameErr = "Firstname is required";
@@ -24,7 +26,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passwordCheck="Password is not same";
     }
     if ($emailErr == null && $passErr == null && $firstNameErr == null && $lastNameErr == null && $confirmPassErr == null && $passwordCheck==null) {
-        header('Location: login.php');
+        $users = getTableDataByCondition("users", "*" , "WHERE email = '".$_POST["email"]. "'");
+        if(count($users)>0){
+            $emailErr="user already exist! please login";
+        }
+        else{
+                $isSaved= insertData("users", ["first_name", "last_name" ,"email", "password" ], [$_POST["firstName"], $_POST["lastName"], $_POST["email"], $_POST["password"]] );
+                if($isSaved==true){
+                header('Location: login.php');
+                }
+                else{
+                    print_r("Something went wrong in signup");
+                }
+        }
     }
 }
 ?>
@@ -38,7 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body class="m-0 p-0">
     <div class="container-fluid m-0 p-0">
-        <?php include './header.php'; ?>
+        <?php include './header.php'; 
+        ?>
         <div class="pt-110 d-flex flex-row justify-content-center align-items-center">
             <form class="col-lg-5 col-md-8 col-sm-10" method="post">
                 <div class="bg-white p-5 rounded-lg shadow-lg">

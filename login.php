@@ -1,10 +1,13 @@
 <!-- php code for validationas -->
 <?php
+include 'dbOperations.php';
 session_start();
 
 $emailErr = $passErr = null;
 $email = $pass = null;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email=$_POST["email"];
+    $pass=$_POST["pass"];
     if (empty($_POST["email"])) {
         $emailErr = "Email is required";
     }
@@ -12,11 +15,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passErr = "Password is required";
     }
     if ($emailErr == null && $passErr == null) {
-        
-        $_SESSION["email"] = $_POST["email"];
-        $_SESSION["pass"] = $_POST["pass"];
-
-        header('Location: index.php');
+        print_r("lsajh");
+        $users = getTableDataByCondition("users", "*", "WHERE email = '$email' AND password = '$pass'");
+        print_r($users);
+        if (count($users) > 0) {
+            $_SESSION["email"] = $_POST["email"];
+            $_SESSION["pass"] = $_POST["pass"];
+            header('Location: index.php');
+        }
+        else{
+            $emailErr = "Invalid credentials";
+            // print_r("Invalid credentials");
+        }
     }
 }
 

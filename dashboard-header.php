@@ -17,6 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav width100 justify-content-end">
+                    <li class="nav-item nav-link">
+                        <?php echo $_SESSION["email"]?>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Profile</a>
                         </li>
