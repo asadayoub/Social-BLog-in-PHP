@@ -15,12 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passErr = "Password is required";
     }
     if ($emailErr == null && $passErr == null) {
-        print_r("lsajh");
         $users = getTableDataByCondition("users", "*", "WHERE email = '$email' AND password = '$pass'");
-        print_r($users);
         if (count($users) > 0) {
             $_SESSION["email"] = $_POST["email"];
             $_SESSION["pass"] = $_POST["pass"];
+            $_SESSION["id"] = $users[0]["id"];
             header('Location: index.php');
         }
         else{
