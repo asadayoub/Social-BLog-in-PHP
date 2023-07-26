@@ -20,6 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["email"] = $_POST["email"];
             $_SESSION["pass"] = $_POST["pass"];
             $_SESSION["id"] = $users[0]["id"];
+            $_SESSION["address"] = $users[0]["address"];
+            $_SESSION["phone"] = $users[0]["phone"];
+            $_SESSION["birthday"] = $users[0]["birthday"];
+            $_SESSION["gender"] = $users[0]["gender"];
+            $_SESSION["description"] = $users[0]["description"];
+            $_SESSION["first_name"] = $users[0]["first_name"];
+            $_SESSION["last_name"] = $users[0]["last_name"];
             header('Location: index.php');
         }
         else{

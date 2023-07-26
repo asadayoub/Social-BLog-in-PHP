@@ -60,7 +60,7 @@ foreach ($array as $item){ ?>
                     <form method="post" action="./deleteData.php">
                     <input type="hidden" value="<?php echo $item["post_id"]?>" name="id">
                     
-                    <button class="deco-none" name="deletepost">
+                    <button class="deco-none btn btn-danger" name="deletepost">
                   <i class="fas fa-trash-alt cursor-pointer"></i>
                     </button>
                     </form>
