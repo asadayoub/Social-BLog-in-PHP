@@ -71,5 +71,6 @@ function updateTableData($tableName,$columnValues ,$condition = "")
 // print_r($_SESSION["email"]);
 // $data = insertData('posts', ["user_id","post_description", "created_at", "updated_at"], [(int)$_SESSION["id"], "asdfgh", date("y/m/d"), date("y/m/d")]);
 // $data=updateTableData("posts", "post_description = 'post1'", "WHERE id = 1");
+// $update = updateTableData("users", "first_name = 'asd', last_name = 'asdf', description = 'asdfg', address = 'asdf', phone = 'asdf'", "WHERE id = '20'");
 
-// print_r($data);
+// print_r($update);

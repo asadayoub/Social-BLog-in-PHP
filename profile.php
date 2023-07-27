@@ -1,5 +1,32 @@
+<?php include './dbOperations.php';?>
+<?php
+session_start();
+$firstName = $_POST["first-name"];
+$lastName = $_POST["last-name"];
+$description = $_POST["description"];
+$address = $_POST["address"];
+$phone = $_POST["phone"];
+$birthday = date('Y-m-d',strtotime($_POST["date-of-birth"]));
+$gender = $_POST["gender"];
+$id= $_SESSION["id"];
+if (isset($_POST["infoUpdate"])) {
+    $update = updateTableData("users", "first_name = '$firstName',last_name = '$lastName', description = '$description', address = '$address', phone = '$phone', gender = '$gender', birthday = '$birthday'", "WHERE id = '$id'");
+    
+    $_SESSION["address"] = $_POST["address"];
+    $_SESSION["phone"] = $_POST["phone"];
+    $_SESSION["birthday"] = date('Y-m-d',strtotime($_POST["date-of-birth"]));
+    $_SESSION["gender"] = $_POST["gender"];
+    $_SESSION["description"] = $_POST["description"];
+    $_SESSION["first_name"] = $_POST["first-name"];
+    $_SESSION["last_name"] = $_POST["last-name"];
+    
+    header('Location: profile.php');
+    
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <?php include './assets.php'; ?>
@@ -7,9 +34,7 @@
 </head>
 
 <body class="m-0 p-0">
-    <?php
-    include './infoEditModal.php';
-    ?>
+
     <div class="container-fluid m-0 p-0">
         <?php include './dashboard-header.php'; ?>
         <div class="pt-110 d-flex align-items-center justify-content-center">
@@ -24,7 +49,12 @@
                     <div class="col-lg-7 pt-3 col-md-3 col-sm-3">
                         <p class="pl-3 font-weight-bold"><?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></p>
                         <div class="pl-3">
+                            <form method="post">
+                            <?php
+                            include './infoEditModal.php';
+                            ?>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#infoUpdateModal"><i class="fas fa-edit cursor-pointer"></i></button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-lg-10 pt-5 row">
@@ -57,7 +87,7 @@
                                 Description:
                             </div>
                             <div class="">
-                             <p class="url-spacing">   <?php echo $_SESSION["description"]; ?></p>
+                                <p class="url-spacing"> <?php echo $_SESSION["description"]; ?></p>
                             </div>
 
                         </div>
@@ -69,7 +99,7 @@
         <div class="container posts-content">
             <div class="row pt-3">
                 <?php
-                include './dbOperations.php';
+                
                 include './post.php';
                 ?>
             </div>
