@@ -128,5 +128,16 @@ h1 {
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
     hyphens: auto;
-    
+
+}
+
+.background-border-none {
+    background: none;
+    border: none;
+
+}
+.comment-button{
+    top: 50%;
+    left: 90%;
+    transform: translate(20%, -50%);
 }

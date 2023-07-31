@@ -29,7 +29,7 @@ if(isset($_GET["logout"])){
                         <li class="nav-item">
                         <form action="" method="get">
                             <button type="submit" class="btn button-design rounded width100" name="logout">
-                            Logout</button>
+                            <i class="fas fa-sign-out-alt"></i>Logout</button>
                         </form>
                         </li>
                     </ul>
