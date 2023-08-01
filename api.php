@@ -8,7 +8,7 @@ function callLike($data)
 }
 function callComment($data)
 {
-    $result = insertData("post_comments", ['user_id', 'post_id', 'comment'], (int)[$data["user_id"], (int)$data["post_id"], $data["comment"]]);
+    $result = insertData("post_comments", ['user_id', 'post_id', 'comment'], [(int)$data["user_id"], (int)$data["post_id"], $data["comment"]]);
     return $result;
 }
 // Set the content type to JSON
@@ -52,8 +52,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return;
     }
     if ($data['action'] == 'comment') {
-        $comment = callComment($data);
-        echo $comment;
+        try{
+            $iscomment = callComment($_POST);
+            // echo $iscomment;
+            // return;
+            if ($iscomment == true) {
+                echo json_encode(array('success' => true));
+            } else {
+                http_response_code(400);
+                echo json_encode(array('error' => 'Something Went Wrong'));
+            }
+        }
+        catch (Exception $ex) {
+            // echo $ex;
+            http_response_code(500);
+            echo json_encode(array('error' => $ex));
+        }
+        
         return;
     }
 }

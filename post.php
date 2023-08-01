@@ -79,26 +79,57 @@ foreach ($array as $item) {
                 <?php } ?>
                 <div class="ml-3 pt-2">
                     <!-- <form method="post" id="likeForm"> -->
-                        <div id="like_<?php echo $item["post_id"]?>">
-                            <input type="hidden" value="<?php echo $item["post_id"] ?>" name="post_id">
-                            <input type="hidden" value="<?php echo $_SESSION["id"] ?>" name="user_id">
-                            <button type="submit" class="cursor-pointer background-border-none deco-none" id="like_btn_<?php echo $item["post_id"]?>" onclick="javascript:addlike(<?php echo $item['post_id'] ?>, <?php echo $_SESSION['id'] ?>,)"><i class="fas fa-thumbs-up fa-lg"></i></button>
+                    <div>
+                        <input type="hidden" value="<?php echo $item["post_id"] ?>" name="post_id">
+                        <input type="hidden" value="<?php echo $_SESSION["id"] ?>" name="user_id">
+                        <div id="like_<?php echo $item["post_id"] ?>">
+                            <button type="submit" class="cursor-pointer background-border-none deco-none" id="like_btn_<?php echo $item["post_id"] ?>" onclick="javascript:addlike(<?php echo $item['post_id'] ?>, <?php echo $_SESSION['id'] ?>,)"><i class="fas fa-thumbs-up fa-lg"></i></button>
+
+
+                            <?php
+                            $likes = getTableDataByCondition("post_likes", "user_id, post_id", 'WHERE post_id = ' . $item["post_id"] . '');
+                            echo count($likes);
+
+                            ?>
+                            likes
                         </div>
+                    </div>
+
                     <!-- </form> -->
                 </div>
-                
-                <div class="">
-                    <form method="post" class="pt-2">
-                        <div class="ml-3 position-relative">
-                            <input type="hidden" value="<?php echo $item["post_id"] ?>" name="post_id">
-                            <input type="hidden" value="<?php echo $item["user_id"] ?>" name="user_id">
-                            <input type="text" placeholder="Write your comment" class="form-control">
-                            <div class="position-absolute comment-button">
-                                <button type="button" class="cursor-pointer deco-none background-border-none" name="comment"><i class="fas fa-paper-plane"></i></button>
-                            </div>
-                        </div>
-                    </form>
 
+                <div class="pt-2">
+
+                    <div class="ml-3 position-relative">
+                        <input type="hidden" value="<?php echo $item["post_id"] ?>" name="post_id">
+                        <input type="hidden" value="<?php echo $_SESSION["id"] ?>" name="user_id">
+                        <input type="text" placeholder="Write your comment" class="form-control comment_<?php echo $item["post_id"] ?>">
+                        <div class="position-absolute comment-button">
+                            <button type="button" class="cursor-pointer deco-none background-border-none" name="comment" onclick="javascript:addcomment(<?php echo $item['post_id'] ?>, <?php echo $_SESSION['id'] ?>,)"><i class="fas fa-paper-plane"></i></button>
+
+                        </div>
+
+
+
+                    </div>
+                    <div class="ml-3">
+
+                        <?php
+                        $comment = getTableDataByCondition("post_comments", "user_id, post_id, comment", 'WHERE post_id = ' . $item["post_id"] . '');
+                        // print_r($comment);
+                        foreach ($comment as $msg) {
+                            $user = getTableDataByCondition("users", "first_name, last_name, id", 'WHERE id = ' . $msg["user_id"] . '');
+                            foreach ($user as $commentor) {
+                                echo $commentor["first_name"] . " " . $commentor["last_name"];
+                            } ?>
+                                commented
+                            <div class="ml-2">
+                                <?php echo $msg["comment"]; ?>
+                            </div>
+
+                        <?php    }
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
