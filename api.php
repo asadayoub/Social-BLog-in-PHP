@@ -2,9 +2,17 @@
 include './dbOperations.php';
 function callLike($data)
 {
-
+    $isliked = false;
+  $likeCheck=getTableDataByCondition("post_likes", "user_id, post_id", 'WHERE user_id = ' . $data["user_id"] .' AND post_id = '.$data["post_id"]. '');
+  if(count($likeCheck)>0){
+    $result = deleteData("post_likes",'WHERE user_id = ' . $data["user_id"] .' AND post_id = '.$data["post_id"].'');
+    return ["result" => $result, "isliked" => $isliked];
+  }
+  else{
+    $isliked = true;
     $result = insertData("post_likes", ['user_id', 'post_id'], [(int)$data["user_id"], (int)$data["post_id"]]);
-    return $result;
+    return ["result" => $result, "isliked" => $isliked];
+}
 }
 function callComment($data)
 {
@@ -37,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // }
             // else {
                 $islike = callLike($_POST);
-                if ($islike == true) {
-                    echo json_encode(array('success' => true));
+                if($islike["result"] == true){
+                    echo json_encode(array('success' => true , 'isliked' => $islike["isLiked"]));
                 } else {
                     http_response_code(400);
                     echo json_encode(array('error' => 'Something Went Wrong'));

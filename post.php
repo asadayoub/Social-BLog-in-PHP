@@ -32,7 +32,11 @@ $array = getTableDataByCondition("posts", "first_name, last_name, email, user_id
 <?php
 include './postEditModal.php';
 foreach ($array as $item) {
+    $likes = getTableDataByCondition("post_likes", "user_id, post_id", 'WHERE post_id = ' . $item["post_id"] . '');
 
+    $filtered = array_filter($likes, function ($like) {
+        return $like["user_id"] == $_SESSION["id"];
+    });
 ?>
     <div class="col-lg-6">
         <div class="card mb-4 rounded-lg shadow-lg">
@@ -83,15 +87,25 @@ foreach ($array as $item) {
                         <input type="hidden" value="<?php echo $item["post_id"] ?>" name="post_id">
                         <input type="hidden" value="<?php echo $_SESSION["id"] ?>" name="user_id">
                         <div id="like_<?php echo $item["post_id"] ?>">
-                            <button type="submit" class="cursor-pointer background-border-none deco-none" id="like_btn_<?php echo $item["post_id"] ?>" onclick="javascript:addlike(<?php echo $item['post_id'] ?>, <?php echo $_SESSION['id'] ?>,)"><i class="fas fa-thumbs-up fa-lg"></i></button>
-
-
                             <?php
-                            $likes = getTableDataByCondition("post_likes", "user_id, post_id", 'WHERE post_id = ' . $item["post_id"] . '');
-                            echo count($likes);
-
+                            $colorCondition = "";
+                            if (count($filtered) > 0) {
+                                $colorCondition = "text-primary";
+                            }
                             ?>
-                            likes
+                            <button type="submit" class="cursor-pointer background-border-none deco-none d-flex gap" id="like_btn_<?php echo $item["post_id"] ?>" onclick="javascript:addlike(<?php echo $item['post_id'] ?>, <?php echo $_SESSION['id'] ?>,)">
+                                <i class="fas fa-thumbs-up fa-lg <?php echo $colorCondition; ?>"></i>
+                                <span>
+                            <?php
+
+
+                            // echo count($filtered);
+                            echo count($likes);
+                            ?>
+                            likes</span>
+                            </button>
+
+                            
                         </div>
                     </div>
 
@@ -112,23 +126,29 @@ foreach ($array as $item) {
 
 
                     </div>
-                    <div class="ml-3">
+                    <div class="ml-3 pt-2 comment-content">
+
 
                         <?php
                         $comment = getTableDataByCondition("post_comments", "user_id, post_id, comment", 'WHERE post_id = ' . $item["post_id"] . '');
                         // print_r($comment);
                         foreach ($comment as $msg) {
                             $user = getTableDataByCondition("users", "first_name, last_name, id", 'WHERE id = ' . $msg["user_id"] . '');
-                            foreach ($user as $commentor) {
-                                echo $commentor["first_name"] . " " . $commentor["last_name"];
-                            } ?>
-                                commented
-                            <div class="ml-2">
-                                <?php echo $msg["comment"]; ?>
-                            </div>
+                            foreach ($user as $commentor) { ?>
+                                <div class="border rounded-lg pl-4 mt-2 comment-<?php echo $msg["post_id"] ?>">
+                                    <div>
+                                        <?php
+                                        echo $commentor["first_name"] . " " . $commentor["last_name"];
+                                        ?>
 
-                        <?php    }
-                        ?>
+                                    <?php  } ?>
+                                    commented</div>
+                                    <div class="ml-2 ">
+                                        <?php echo $msg["comment"]; ?>
+                                    </div>
+                                </div>
+                            <?php    }
+                            ?>
                     </div>
                 </div>
             </div>

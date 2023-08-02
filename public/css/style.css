@@ -141,3 +141,6 @@ h1 {
     left: 90%;
     transform: translate(20%, -50%);
 }
+.solid-border{
+    border-style: solid;
+}
