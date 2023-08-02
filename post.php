@@ -7,6 +7,7 @@ $condition = "";
 $fileName == 'profile.php' ? $condition = "INNER JOIN users ON posts.user_id = users.id WHERE user_id = " . $_SESSION['id'] : $condition = "INNER JOIN users ON posts.user_id = users.id";
 $array = [];
 $array = getTableDataByCondition("posts", "first_name, last_name, email, user_id, post_description, created_at, updated_at, posts.id as post_id", $condition);
+
 // if(count($array) > 0) {
 // foreach ($array as $item) {
 //     echo $item;
@@ -33,6 +34,7 @@ $array = getTableDataByCondition("posts", "first_name, last_name, email, user_id
 include './postEditModal.php';
 foreach ($array as $item) {
     $likes = getTableDataByCondition("post_likes", "user_id, post_id", 'WHERE post_id = ' . $item["post_id"] . '');
+    $images = getTableDataByCondition("post_images", "user_id, post_id, file_destination", 'WHERE post_id = ' . $item["post_id"] . '');
 
     $filtered = array_filter($likes, function ($like) {
         return $like["user_id"] == $_SESSION["id"];
@@ -86,7 +88,13 @@ foreach ($array as $item) {
                     <div>
                         <input type="hidden" value="<?php echo $item["post_id"] ?>" name="post_id">
                         <input type="hidden" value="<?php echo $_SESSION["id"] ?>" name="user_id">
-                        <div id="like_<?php echo $item["post_id"] ?>">
+                        <?php foreach ($images as $image) {?>
+                        <div class="">
+                            
+                            <img src="<?php echo $image["file_destination"];?>" alt="" class="width100">
+                        </div>
+                        <?php }?>
+                        <div id="like_<?php echo $item["post_id"] ?>" class="pt-2">
                             <?php
                             $colorCondition = "";
                             if (count($filtered) > 0) {

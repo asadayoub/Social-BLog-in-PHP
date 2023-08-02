@@ -20,7 +20,7 @@ function insertTableData($tableName, $columns, $values)
     $result = mysqli_query($conn, $sql);
     return $result;
 }
-function insertData($tableName, $columns, $values)
+function insertData($tableName, $columns, $values, $isGetId = false)
 {
     $conn = dbConnection();
     // Sanitize the inputs to prevent SQL injection 
@@ -29,12 +29,19 @@ function insertData($tableName, $columns, $values)
     // Build the SQL query 
     $columnsStr = implode(', ', array_map('mysqli_real_escape_string', array_fill(0, count($columns), $conn), $columns));
     $valuesStr = implode("', '", array_map('mysqli_real_escape_string', array_fill(0, count($values), $conn), $values));
-
+    $id = null;
     // Complete the query 
     $sql = "INSERT INTO $tableName ($columnsStr) VALUES ('$valuesStr')";
 
     // Execute the query 
     if (mysqli_query($conn, $sql)) {
+        if($isGetId){
+        $id = mysqli_insert_id($conn);
+        // print_r($id);
+        if($id) {
+            return $id;
+        }
+    }
         return true; // Success 
     } else {
         return false;
