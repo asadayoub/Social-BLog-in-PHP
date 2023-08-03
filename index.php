@@ -1,43 +1,32 @@
 <?php
 $title = "Home";
 include 'dbOperations.php';
+include './phpOperations.php';
 $postDescriptionErr = $imageErr = null;
 $postDescription = null;
 session_start();
 
 if (isset($_POST["savePost"])) {
-    
+
     if (empty($_POST["postDescription"])) {
         $postDescriptionErr = "Description is required";
     }
     if ($postDescriptionErr == null) {
 
-        $data = insertData('posts', ["user_id", "post_description", "created_at", "updated_at"], [(int)$_SESSION["id"], $_POST["postDescription"], date("y/m/d"), date("y/m/d")],true);
+        $data = insertData('posts', ["user_id", "post_description", "created_at", "updated_at"], [(int)$_SESSION["id"], $_POST["postDescription"], date("y/m/d"), date("y/m/d")], true);
         $file = $_FILES["file"];
-        $fileName = $file["name"];
-        $tmpFilePath = $file["tmp_name"];
-        // Define the upload directory path
-        $uploadDir = "uploads/";
-        // echo ($uploadDir);
-        // Generate a unique filename to avoid overwriting existing files
-        $uploadedFileName = $_SESSION['id'] . '_'. uniqid() . '.' . pathinfo($fileName)['extension'];
-        // print_r($_FILES);
-        // Move the uploaded file to the specified directory
-        // print_r($file["tmp_name"]);
-        $destination = $uploadDir . $uploadedFileName;
-        move_uploaded_file($tmpFilePath, $destination);
-        // if (move_uploaded_file($tmpFilePath, $destination)) {
-           
-            $image = insertData('post_images', ["user_id", "post_id", "file_destination"], [(int)$_SESSION["id"], (int)$data, "$destination"]);
-    
-            // File upload successful, insert the file details into the database
-            // $image = "INSERT INTO files (filename) VALUES ('$destination')";
-    
-            // if ($image == TRUE) {
-            //     echo "File uploaded and record inserted successfully.";
-            // } else {
-            //     echo "Error: file not uploaded";
-            // }
+        $destination = fileUpload($file, "./uploads/");
+
+        $image = insertData('post_images', ["user_id", "post_id", "file_destination"], [(int)$_SESSION["id"], (int)$data, "$destination"]);
+
+        // File upload successful, insert the file details into the database
+        // $image = "INSERT INTO files (filename) VALUES ('$destination')";
+
+        // if ($image == TRUE) {
+        //     echo "File uploaded and record inserted successfully.";
+        // } else {
+        //     echo "Error: file not uploaded";
+        // }
         // }
     }
 }
