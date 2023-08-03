@@ -44,10 +44,12 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="">Profile Picture</label>
                             <input type="file" class="form-control image" id="image" name="profile_image">
 
                         </div>
                         <div class="form-group">
+                            <label for="">Cover Photo</label>
                             <input type="file" class="form-control image" id="image" name="cover_image">
 
                         </div>

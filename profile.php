@@ -63,9 +63,24 @@ if (isset($_POST["infoUpdate"])) {
             <div class="col-lg-10 col-md-8 col-sm-10 height600">
                 <div class="bg-white rounded-lg shadow-lg row align-items-center justify-content-center pb-5">
                     <div class="rounded-lg width100 position-relative">
-                        <img src="<?php echo $_SESSION["cover_destination"]; ?>" alt="" class="width100 cover-round height250">
+                        <?php
+                        if ($_SESSION["cover_destination"] == "") { ?>
+                            <img src="./uploads/profile/default_cover.png" alt="" class="width100 cover-round height250">
+                        <?php
+                        } else { ?>
+                            <img src="<?php echo $_SESSION["cover_destination"]; ?>" alt="" class="width100 cover-round height250">
+                        <?php }
+                        ?>
                         <div class="position-absolute profile-container">
+                        <?php
+                        if ($_SESSION["profile_destination"] == "") { ?>
+                            <img src="./uploads/profile/default_profile.jpeg" alt="" class="profile-image">
+                        <?php
+                        } else { ?>
                             <img src="<?php echo ($_SESSION["profile_destination"]); ?>" alt="" class="profile-image">
+
+                        <?php }
+                        ?>
                         </div>
                     </div>
                     <div class="col-lg-7 pt-3 col-md-3 col-sm-3">
