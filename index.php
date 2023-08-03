@@ -14,6 +14,8 @@ if (isset($_POST["savePost"])) {
     if ($postDescriptionErr == null) {
 
         $data = insertData('posts', ["user_id", "post_description", "created_at", "updated_at"], [(int)$_SESSION["id"], $_POST["postDescription"], date("y/m/d"), date("y/m/d")], true);
+        if ($_FILES["file"]["name"] == "") {
+        } else {
         $file = $_FILES["file"];
         $destination = fileUpload($file, "./uploads/");
 
@@ -28,6 +30,7 @@ if (isset($_POST["savePost"])) {
         //     echo "Error: file not uploaded";
         // }
         // }
+        }
     }
 }
 

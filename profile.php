@@ -72,15 +72,15 @@ if (isset($_POST["infoUpdate"])) {
                         <?php }
                         ?>
                         <div class="position-absolute profile-container">
-                        <?php
-                        if ($_SESSION["profile_destination"] == "") { ?>
-                            <img src="./uploads/profile/default_profile.jpeg" alt="" class="profile-image">
-                        <?php
-                        } else { ?>
-                            <img src="<?php echo ($_SESSION["profile_destination"]); ?>" alt="" class="profile-image">
+                            <?php
+                            if ($_SESSION["profile_destination"] == "") { ?>
+                                <img src="./uploads/profile/default_profile.jpeg" alt="" class="profile-image">
+                            <?php
+                            } else { ?>
+                                <img src="<?php echo ($_SESSION["profile_destination"]); ?>" alt="" class="profile-image">
 
-                        <?php }
-                        ?>
+                            <?php }
+                            ?>
                         </div>
                     </div>
                     <div class="col-lg-7 pt-3 col-md-3 col-sm-3">
