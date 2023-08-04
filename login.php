@@ -6,8 +6,8 @@ session_start();
 $emailErr = $passErr = null;
 $email = $pass = null;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email=$_POST["email"];
-    $pass=$_POST["pass"];
+    $email = $_POST["email"];
+    $pass = $_POST["pass"];
     if (empty($_POST["email"])) {
         $emailErr = "Email is required";
     }
@@ -28,8 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["first_name"] = $users[0]["first_name"];
             $_SESSION["last_name"] = $users[0]["last_name"];
             header('Location: index.php');
-        }
-        else{
+        } else {
             $emailErr = "Invalid credentials";
             // print_r("Invalid credentials");
         }
