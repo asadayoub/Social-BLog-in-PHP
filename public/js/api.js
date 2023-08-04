@@ -16,9 +16,9 @@ function addlike(post_id, user_id) {
         dataType: 'json',
         success: function (data) {
             // Handle the JSON data returned by the API
-            console.log(data);
+            // console.log(data);
             const element = document.querySelector(`#like_btn_${formData.post_id} > .text-primary`)
-            console.log(element)
+            // console.log(element)
             if(element){
                 element.classList.remove("text-primary");
                 
@@ -60,7 +60,7 @@ function addcomment(post_id, user_id) {
         dataType: 'json',
         success: function (data) {
             // Handle the JSON data returned by the API
-            console.log(data);
+            // console.log(data);
             // document.querySelector(`#like_btn_${formData.post_id}`).setAttribute('style', 'color: blue;')
             // You can process the response data here
         },
@@ -80,5 +80,6 @@ function addcomment(post_id, user_id) {
     </div>
 `}
     msg.value = ""
+    // const comment_C =document.querySelector(`.comment-content > .comment-${formData.post_id} > p`).parentElement.innerHTML += getCommentHtml(formData)
     return document.querySelector(`.comment-content > .comment-${formData.post_id}`).parentElement.innerHTML += getCommentHtml(formData)
 }

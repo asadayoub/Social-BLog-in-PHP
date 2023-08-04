@@ -1,12 +1,6 @@
 <script src="./public/js/api.js"></script>
 <?php
 // include 'dbOperations.php';
-$routes = explode("/", $_SERVER['REQUEST_URI']);
-$fileName = $routes[count($routes) - 1];
-$condition = "";
-$fileName == 'profile.php' ? $condition = "INNER JOIN users ON posts.user_id = users.id WHERE user_id = " . $_SESSION['id'] : $condition = "INNER JOIN users ON posts.user_id = users.id";
-$array = [];
-$array = getTableDataByCondition("posts", "first_name, last_name, email, user_id, post_description, created_at, updated_at, posts.id as post_id", $condition);
 
 // if(count($array) > 0) {
 // foreach ($array as $item) {
@@ -32,6 +26,13 @@ $array = getTableDataByCondition("posts", "first_name, last_name, email, user_id
 ?>
 <?php
 include './postEditModal.php';
+$routes = explode("/", $_SERVER['REQUEST_URI']);
+$fileName = $routes[count($routes) - 1];
+$condition = "";
+$fileName == 'profile.php' ? $condition = "INNER JOIN users ON posts.user_id = users.id WHERE user_id = " . $_SESSION['id'] : $condition = "INNER JOIN users ON posts.user_id = users.id";
+$array = [];
+$array = getTableDataByCondition("posts", "first_name, last_name, email, user_id, post_description, created_at, updated_at, posts.id as post_id", $condition);
+
 foreach ($array as $item) {
     $likes = getTableDataByCondition("post_likes", "user_id, post_id", 'WHERE post_id = ' . $item["post_id"] . '');
     $images = getTableDataByCondition("post_images", "user_id, post_id, file_destination", 'WHERE post_id = ' . $item["post_id"] . '');
@@ -50,6 +51,7 @@ foreach ($array as $item) {
                 </div>
                 <p class="ml-3">
                     <?php
+                    
                     echo $item["post_description"]
                     ?>
                 </p>
@@ -144,6 +146,7 @@ foreach ($array as $item) {
                             $user = getTableDataByCondition("users", "first_name, last_name, id", 'WHERE id = ' . $msg["user_id"] . '');
                             foreach ($user as $commentor) { ?>
                                 <div class="border rounded-lg pl-4 mt-2 comment-<?php echo $msg["post_id"] ?>">
+                                <p></p>
                                     <div>
                                         <?php
                                         echo $commentor["first_name"] . " " . $commentor["last_name"];

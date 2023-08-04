@@ -15,33 +15,37 @@ $profile_image = getTableDataByCondition("profile_images", "file_destination", "
 $_SESSION["profile_destination"] = $profile_image[0]["file_destination"];
 $cover_image = getTableDataByCondition("profile_covers", "file_destination", "WHERE user_id = '$id' AND is_active = true");
 $_SESSION["cover_destination"] = $cover_image[0]["file_destination"];
+$error = "";
 if (isset($_POST["infoUpdate"])) {
-    $update = updateTableData("users", "first_name = '$firstName',last_name = '$lastName', description = '$description', address = '$address', phone = '$phone', gender = '$gender', birthday = '$birthday'", "WHERE id = '$id'");
-    if ($_FILES["profile_image"]["name"] == "") {
+    if ($_POST["first-name"] == "" || $_POST["last-name"] == "" || $_POST["description"] == "") {
+        $error = "first name, last name and description is required";
     } else {
-        $file = $_FILES["profile_image"];
-        $destination = fileUpload($file, "./uploads/profile/");
-        $update_isactive = updateTableData("profile_images", "is_active = false", "WHERE user_id = $id");
-        $image = insertData('profile_images', ["user_id", "file_destination", "is_active"], [(int)$_SESSION["id"], $destination, true]);
-        $_SESSION["profile_destination"] = $destination;
-    }
-    if ($_FILES["cover_image"]["name"] == "") {
-    } else {
-        $file = $_FILES["cover_image"];
+        $update = updateTableData("users", "first_name = '$firstName',last_name = '$lastName', description = '$description', address = '$address', phone = '$phone', gender = '$gender', birthday = '$birthday'", "WHERE id = '$id'");
+        if ($_FILES["profile_image"]["name"] == "") {
+        } else {
+            $file = $_FILES["profile_image"];
+            $destination = fileUpload($file, "./uploads/profile/");
+            $update_isactive = updateTableData("profile_images", "is_active = false", "WHERE user_id = $id");
+            $image = insertData('profile_images', ["user_id", "file_destination", "is_active"], [(int)$_SESSION["id"], $destination, true]);
+            $_SESSION["profile_destination"] = $destination;
+        }
+        if ($_FILES["cover_image"]["name"] == "") {
+        } else {
+            $file = $_FILES["cover_image"];
 
-        $destination = fileUpload($file, "./uploads/profile/");
-        $update_isactive = updateTableData("profile_covers", "is_active = false", "WHERE user_id = $id");
-        $image = insertData('profile_covers', ["user_id", "file_destination", "is_active"], [(int)$_SESSION["id"], $destination, true]);
-        $_SESSION["cover_destination"] = $destination;
+            $destination = fileUpload($file, "./uploads/profile/");
+            $update_isactive = updateTableData("profile_covers", "is_active = false", "WHERE user_id = $id");
+            $image = insertData('profile_covers', ["user_id", "file_destination", "is_active"], [(int)$_SESSION["id"], $destination, true]);
+            $_SESSION["cover_destination"] = $destination;
+        }
+        $_SESSION["address"] = $_POST["address"];
+        $_SESSION["phone"] = $_POST["phone"];
+        $_SESSION["birthday"] = date('Y-m-d', strtotime($_POST["date-of-birth"]));
+        $_SESSION["gender"] = $_POST["gender"];
+        $_SESSION["description"] = $_POST["description"];
+        $_SESSION["first_name"] = $_POST["first-name"];
+        $_SESSION["last_name"] = $_POST["last-name"];
     }
-    $_SESSION["address"] = $_POST["address"];
-    $_SESSION["phone"] = $_POST["phone"];
-    $_SESSION["birthday"] = date('Y-m-d', strtotime($_POST["date-of-birth"]));
-    $_SESSION["gender"] = $_POST["gender"];
-    $_SESSION["description"] = $_POST["description"];
-    $_SESSION["first_name"] = $_POST["first-name"];
-    $_SESSION["last_name"] = $_POST["last-name"];
-
 
     header('Location: profile.php');
 }
@@ -85,6 +89,7 @@ if (isset($_POST["infoUpdate"])) {
                     </div>
                     <div class="col-lg-7 pt-3 col-md-3 col-sm-3">
                         <p class="pl-3 font-weight-bold"><?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></p>
+                        <small class="text-danger "> <?php echo $error; ?></small>
                         <div class="pl-3">
                             <form method="post" enctype="multipart/form-data">
                                 <?php
@@ -96,29 +101,68 @@ if (isset($_POST["infoUpdate"])) {
                     </div>
                     <div class="col-lg-10 pt-5 row">
 
-                        <div class="d-flex flex-column gap8 col-lg-8">
+                        <div class="d-flex flex-column gap8 col-lg-6">
+                            <!-- <div class="d-flex gap6 align-items-center"> -->
 
-                            <div class="d-flex gap6 align-items-center">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <?php echo $_SESSION["address"]; ?>
-                            </div>
+                            <?php
+                            if ($_SESSION["address"] == "") {
+                            } else { ?>
+
+                                <div class="d-flex gap6 align-items-center">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <?php
+                                    echo $_SESSION["address"]; ?>
+                                </div>
+
+                            <?php } ?>
+
+
                             <div class="d-flex gap6 align-items-center">
                                 <i class="fas fa-envelope"></i>
                                 <?php echo $_SESSION["email"]; ?>
                             </div>
-                            <div class="d-flex gap6 align-items-center">
-                                <i class="fas fa-mobile"></i>
-                                <?php echo $_SESSION["phone"]; ?>
-                            </div>
-                            <div class="d-flex gap6 align-items-center">
-                                <i class="fas fa-birthday-cake"></i>
-                                <?php echo $_SESSION["birthday"]; ?>
-                            </div>
-                            <div class="d-flex gap6 align-items-center">
-                                <i class="fas fa-user"></i>
-                                <?php echo $_SESSION["gender"]; ?>
-                            </div>
+                            <?php
+                            if ($_SESSION["phone"] != "") { ?>
+
+                                <div class="d-flex gap6 align-items-center">
+                                    <i class="fas fa-mobile"></i>
+                                    <?php
+                                    echo $_SESSION["phone"]; ?>
+                                </div>
+
+                            <?php } ?>
+                            <?php
+                            if ($_SESSION["birthday"] == "") {
+                            } else { ?>
+
+                                <div class="d-flex gap6 align-items-center">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <?php
+                                    echo $_SESSION["birthday"]; ?>
+                                </div>
+
+                            <?php } ?>
+                            <?php
+                            if ($_SESSION["gender"] == "") {
+                            } else { ?>
+
+                                <div class="d-flex gap6 align-items-center">
+                                    <?php
+                                    if ($_SESSION["gender"] == "male") { ?>
+                                        <i class="fas fa-male"></i>
+                                    <?php } else { ?>
+                                        <i class="fas fa-female"></i>
+                                    <?php }
+                                    ?>
+
+                                    <?php
+                                    echo $_SESSION["gender"]; ?>
+                                </div>
+
+                            <?php } ?>
                         </div>
+
+                        <!-- </div> -->
                         <div class="col-lg-4">
                             <div class="font-weight-bold">
                                 Description:
@@ -126,6 +170,7 @@ if (isset($_POST["infoUpdate"])) {
                             <div class="">
                                 <p class="url-spacing"> <?php echo $_SESSION["description"]; ?></p>
                             </div>
+
 
                         </div>
                     </div>
